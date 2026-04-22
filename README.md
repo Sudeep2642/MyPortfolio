@@ -5,9 +5,9 @@ Welcome to the repository for my professional portfolio website! This project se
 ## 🛠️ Tech Stack
 
 - **Frontend:** React.js, Vite
-- **Styling:** CSS3 / Tailwind CSS (Optional: change if you're using something else)
+- **Styling:** CSS3 / Tailwind CSS
 - **Icons:** SVG-based custom icons
-- **Deployment:** [Vercel / GitHub Pages / Netlify]
+- **Deployment:** [Vercel / GitHub Pages]
 
 ## ✨ Key Features
 
@@ -16,10 +16,4 @@ Welcome to the repository for my professional portfolio website! This project se
 - **Contact Form:** A way for recruiters and collaborators to reach out directly.
 - **Dynamic Assets:** Uses lightweight SVG graphics for fast loading times.
 
-## 🚀 Getting Started
 
-To run this project locally, follow these steps:
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/Sudeep2642/MyPortfolio.git](https://github.com/Sudeep2642/MyPortfolio.git)
