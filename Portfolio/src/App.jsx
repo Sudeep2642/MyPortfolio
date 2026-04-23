@@ -673,7 +673,6 @@ export default function Portfolio() {
       <footer>
         <div style={{ marginBottom: "0.4rem" }}>🌿 &nbsp;<span className="fn">Sudeep Bhimannavar</span>&nbsp; 🌿</div>
         <div>Bengaluru, India · Full-Stack Engineer · {new Date().getFullYear()}</div>
-        {/* <div className="shloka">सत्यमेव जयते — Truth alone triumphs</div> */}
       </footer>
     </>
   );
