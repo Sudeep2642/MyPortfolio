@@ -411,7 +411,7 @@ export default function Portfolio() {
         .hero-spec { font-size:0.72rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--moss); background:rgba(90,124,78,0.09); border:1px solid rgba(90,124,78,0.22); border-radius:3px; padding:0.3rem 0.9rem; display:inline-block; margin-bottom:0.9rem; }
         .hero-title { font-size:clamp(1rem,2.5vw,1.2rem); font-weight:300; color:var(--sky2); letter-spacing:0.05em; margin-bottom:1.7rem; min-height:2rem; font-family:var(--fsub); }
         .hero-desc { font-size:0.97rem; line-height:1.9; color:var(--muted); margin-bottom:2.4rem; max-width:490px; font-family:var(--fsub); }
-        .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; }
+        .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin-left:2rem; }
         .btn { font-size:0.72rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; padding:0.85rem 2.2rem; border-radius:4px; cursor:pointer; transition:all 0.24s; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; font-family:var(--fbody); }
         .btn-pri { background:var(--sky); color:#fff; box-shadow:4px 4px 0 var(--sky2), 0 6px 20px rgba(59,143,196,0.28); }
         .btn-pri:hover { background:var(--sky2); transform:translate(-2px,-2px); box-shadow:7px 7px 0 #0e4d73; }
@@ -594,7 +594,6 @@ export default function Portfolio() {
           <div className="hero-tagline">Software Engineer</div>
           <h1 className="hero-name">Sudeep<br />Bhimannavar</h1>
           {/* Gemini rec #1: specialisation badge */}
-          <div className="hero-spec">Full-Stack Engineer · Generative AI & Scalable SaaS</div>
           <div className="hero-title">
             <Typewriter strings={["Full-Stack Engineer", "SaaS Architect", "AI Systems Builder", "Backend Specialist", "10K+ DAU Platform Builder"]} />
           </div>
@@ -603,7 +602,6 @@ export default function Portfolio() {
           <div className="hero-cta">
             <a href="#projects" className="btn btn-pri" onClick={e => { e.preventDefault(); scrollTo("projects"); }}>View My Work</a>
             <a href="#contact" className="btn btn-out" onClick={e => { e.preventDefault(); scrollTo("contact"); }}>Get In Touch</a>
-            <a href="/resume.pdf" className="btn-ghost" download>↓ Resume</a>
           </div>
         </div>
 
@@ -822,8 +820,7 @@ export default function Portfolio() {
       <div className="bg-alt" style={{ position: "relative", zIndex: 1 }}>
         <section id="contact" style={{ textAlign: "center" }}>
           <div className="sec">
-            <div className="divider">🌿</div>
-            <div className="eyebrow" style={{ justifyContent: "center" }}>06 — Connect</div>
+            <div className="eyebrow">06 — Connect</div>
             <h2 className="sec-title" style={{ textAlign: "center" }}>Open to Roles &amp; Collaborations</h2>
             <p style={{ color: "var(--muted)", maxWidth: 460, margin: "0 auto", lineHeight: 1.88, fontSize: "0.96rem", fontFamily: "var(--fsub)" }}>
               Whether you're building a product from scratch, scaling an existing system, or need someone who takes full ownership — let's connect.
@@ -831,8 +828,8 @@ export default function Portfolio() {
             <div className="contact-links">
               {[
                 { icon: "✉️", label: "bhimannavarsudeep26@gmail.com", href: "mailto:bhimannavarsudeep26@gmail.com" },
-                { icon: "💼", label: "linkedin/sudeep-bhimannavar", href: "https://linkedin.com/in/sudeep-bhimannavar" },
-                { icon: "🐙", label: "github/sudeepbhimannavar", href: "https://github.com/sudeepbhimannavar" },
+                { icon: "💼", label: "linkedin/sudeepbhimannavar-dev26", href: "https://linkedin.com/in/sudeepbhimannavar-dev26" },
+                { icon: "🐙", label: "github/Sudeep2642", href: "https://github.com/Sudeep2642" },
                 { icon: "📱", label: "+91-7760531692", href: "tel:+917760531692" },
               ].map(c => (
                 <Reveal key={c.label}>
