@@ -572,7 +572,7 @@ export default function Portfolio() {
           {NAV.map(s => (
             <li key={s}><a href={`#${s}`} className={active === s ? "active" : ""} onClick={e => { e.preventDefault(); scrollTo(s); }}>{s}</a></li>
           ))}
-          <li><a href="/resume.pdf" className="nav-resume" download>↓ Resume</a></li>
+          <li><a href="/Sudeep_Bhimannavar_Software_Engineer.pdf" className="nav-resume" download>↓ Resume</a></li>
         </ul>
         <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           <span /><span /><span />
