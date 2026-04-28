@@ -416,8 +416,8 @@ export default function Portfolio() {
         h1.hero-name { font-family:var(--fhead); font-size:clamp(2.8rem,6.5vw,5.5rem); line-height:1.05; color:var(--forest); text-shadow:1px 3px 0 rgba(45,107,58,0.12); margin-bottom:0.5rem; }
         .hero-spec { font-size:0.72rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--moss); background:rgba(90,124,78,0.09); border:1px solid rgba(90,124,78,0.22); border-radius:3px; padding:0.3rem 0.9rem; display:inline-block; margin-bottom:0.9rem; }
         .hero-title { font-size:clamp(1rem,2.5vw,1.2rem); font-weight:300; color:var(--sky2); letter-spacing:0.05em; margin-bottom:1.7rem; min-height:2rem; font-family:var(--fsub); }
-        .hero-desc { font-size:0.97rem; line-height:1.9; color:var(--muted); margin-bottom:2.4rem; max-width:490px; font-family:var(--fsub); }
-        .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; }
+        .hero-desc { font-size:0.97rem; line-height:1.9; color:var(--muted); margin-bottom:2.4rem; margin-left:2.4rem; max-width:490px; font-family:var(--fsub); }
+        .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin-left:3.4rem; }
         .btn { font-size:0.72rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; padding:0.85rem 2.2rem; border-radius:4px; cursor:pointer; transition:all 0.24s; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; font-family:var(--fbody); }
         .btn-pri { background:var(--sky); color:#fff; box-shadow:4px 4px 0 var(--sky2), 0 6px 20px rgba(59,143,196,0.28); }
         .btn-pri:hover { background:var(--sky2); transform:translate(-2px,-2px); box-shadow:7px 7px 0 #0e4d73; }
