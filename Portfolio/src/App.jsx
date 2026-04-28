@@ -269,35 +269,35 @@ function TiltCard({ children, style = {} }) {
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 const SKILLS = [
-  { cat: "Core", icon: "🌿", items: ["Python", "JavaScript", "TypeScript", "Django", "React.js", "Node.js"] },
-  { cat: "AI / ML", icon: "🌤️", items: ["Claude Vision API", "Computer Vision", "OpenCV", "NLP", "Generative AI"] },
-  { cat: "DevOps & Cloud", icon: "🍃", items: ["Docker", "AWS", "CI/CD", "Railway", "GitHub Actions"] },
-  { cat: "Databases", icon: "💧", items: ["MySQL", "PostgreSQL", "SQLite", "Firebase"] },
-  { cat: "System Design", icon: "🏛️", items: ["Multi-Tenant SaaS", "JWT RBAC", "REST APIs", "DRF", "NetworkX"] },
-  { cat: "Security & A11y", icon: "🦋", items: ["WCAG 2.1 AA", "ARIA", "Semantic HTML", "Secure Auth"] },
+  { cat: "Languages", icon: "🌿", items: ["Python", "JavaScript (ES6+)", "Java", "C", "SQL", "HTML5", "CSS3"] },
+  { cat: "Frameworks & Libraries", icon: "🌲", items: ["Django", "Django REST Framework", "React.js", "Node.js", "NetworkX", "NumPy", "Pandas", "OpenCV"] },
+  { cat: "Databases & Cloud", icon: "💧", items: ["MySQL", "PostgreSQL", "SQLite", "Firebase", "AWS (Basics)", "Railway"] },
+  { cat: "AI / ML", icon: "🌤️", items: ["Claude Vision API", "Computer Vision", "Generative AI", "Dijkstra's Algorithm", "Graph Theory", "NLP"] },
+  { cat: "Infrastructure & Tools", icon: "🍃", items: ["Git", "GitHub", "Docker", "Postman", "CI/CD", "Gunicorn", "WhiteNoise", "JWT", "TDD", "System Design"] },
+  { cat: "Accessibility", icon: "🦋", items: ["WCAG 2.1 AA", "ARIA Landmark Roles", "Semantic HTML"] },
 ];
 
 const PROJECTS = [
   {
     title: "MallNav",
-    subtitle: "AI-Powered Indoor Navigation",
+    subtitle: "AI-Driven Indoor Navigation Architecture",
     icon: "🧭",
-    stack: ["Python", "Django", "PostgreSQL", "NetworkX", "Claude Vision API", "OpenCV"],
-    metrics: ["95% route accuracy", "1,000+ concurrent users", "90% setup time cut", "99.5% uptime"],
-    problem: "Mall operators spent 8+ hours manually mapping floor plans and annotating 50+ POIs per venue, making scalable deployment impossible.",
-    solution: "Built a computer vision pipeline using Claude Vision API + OpenCV to auto-classify POIs from floor plan images, feeding into a Dijkstra's graph engine for multi-floor pathfinding. QR-code entry eliminates app downloads.",
-    result: "Setup time dropped from 8 hours to 45 minutes. Route accuracy hit 95%. System handles 1,000+ concurrent users with 99.5% uptime.",
+    stack: ["Python", "Django", "NetworkX", "OpenCV", "Claude Vision API", "JavaScript Canvas API"],
+    metrics: ["95% route accuracy", "1,000+ concurrent users", "90% setup time cut", "80% fewer support tickets"],
+    problem: "Mall operators spent 8+ hours manually mapping floor plans and annotating 50+ POIs per venue. Non-technical staff couldn't maintain maps, creating constant engineering bottlenecks.",
+    solution: "CV pipeline (Claude Vision API + OpenCV) autonomously parses architectural floor plans at 90% POI accuracy. Dijkstra's algorithm on dynamic weighted graphs powers multi-floor navigation. Custom JS Canvas API graph editor lets non-technical staff update maps in real time. QR-based, app-less entry for users.",
+    result: "Setup time: 8 hours → 45 minutes (90% cut). 1,000+ concurrent users at 95% route accuracy. 80% reduction in engineering support tickets. Non-technical staff now own map updates independently.",
     showDiagram: true,
   },
   {
     title: "Formalls",
-    subtitle: "Enterprise Multi-Tenant SaaS",
+    subtitle: "Production Multi-Tenant SaaS Infrastructure",
     icon: "🏢",
-    stack: ["Django", "React.js", "MySQL", "JWT", "REST API", "Docker"],
-    metrics: ["10,000+ DAU", "50,000+ req/day", "30% engagement lift", "60% faster DB"],
-    problem: "Mall operators needed a unified platform to manage 100+ stores, 20+ restaurants and 500+ daily bookings — all in one multi-tenant system with strict data isolation.",
-    solution: "Designed a multi-tenant Django backend with JWT authentication and 5-tier RBAC. Built collaborative filtering for recommendations, real-time conflict detection for bookings, and a live analytics dashboard.",
-    result: "10,000+ daily active users, 50,000+ API requests/day at 99.9% uptime, 60% faster DB queries after query optimization.",
+    stack: ["Django", "React.js", "MySQL", "JWT", "Gunicorn", "WhiteNoise", "Docker"],
+    metrics: ["10,000+ DAU", "50,000+ req/day", "30% engagement lift", "60% faster DB", "99.9% uptime"],
+    problem: "Mall operators needed a single platform managing 100+ stores, 20+ restaurants and 500+ daily bookings with strict cross-tenant data isolation and no manual coordination overhead.",
+    solution: "Normalized MySQL schemas with strict cross-tenant isolation. 5-tier JWT-based RBAC for 10,000+ users. Real-time slot conflict detection and automated multi-channel notifications. Collaborative filtering recommendation engine. Analytics Engine tracking footfall trends. Gunicorn + WhiteNoise for production deployment. Full WCAG 2.1 AA compliance.",
+    result: "10,000+ DAU, 50,000+ req/day at 99.9% uptime. 30% engagement lift and 25% higher avg transaction value from recommendations. 60% latency reduction. 70% less manual coordination for mall management. 45% fewer support tickets via WhatsApp automation.",
     showDiagram: false,
   },
 ];
@@ -305,28 +305,34 @@ const PROJECTS = [
 const STATS = [
   { label: "Daily API Requests", val: 50000, suffix: "+" },
   { label: "Daily Active Users", val: 10000, suffix: "+" },
-  { label: "API Uptime", val: 99, suffix: ".9%" },
-  { label: "Query Speed Boost", val: 60, suffix: "%" },
+  { label: "Query Latency Cut", val: 60, suffix: "%" },
+  { label: "Engagement Lift", val: 30, suffix: "%" },
 ];
 
 const BLOG_POSTS = [
   {
-    title: "How I Optimized MySQL Queries by 60%",
+    title: "How I Cut MySQL Query Latency by 60% in Production",
     tag: "Backend",
-    desc: "The exact indexing, query rewriting and connection-pool tweaks that took our API from sluggish to 50K+ req/day without touching the schema.",
+    desc: "The exact indexing strategies, query rewrites and Gunicorn tuning that took our analytical endpoints from sluggish to handling 50K+ req/day — without a schema rewrite.",
     emoji: "💧",
   },
   {
-    title: "Multi-Tenant Architecture with Django: Lessons Learned",
+    title: "Building a Multi-Tenant SaaS with Django: Schema Isolation Done Right",
     tag: "System Design",
-    desc: "Building strict data isolation for 5+ enterprise clients in a single Django codebase — schema choices, middleware tricks and the bugs I wish I caught earlier.",
+    desc: "Designing normalized MySQL schemas with strict cross-tenant data isolation for 5+ enterprise clients — the middleware choices, RBAC architecture and pitfalls I'd avoid next time.",
     emoji: "🏛️",
   },
   {
-    title: "Claude Vision API in Production: A Practical Guide",
+    title: "Claude Vision API + OpenCV: Parsing Floor Plans at 90% Accuracy",
     tag: "AI / ML",
-    desc: "How I integrated Claude Vision API into a real-time POI classification pipeline, handling edge cases, cost control and accuracy tuning.",
+    desc: "How I built an autonomous POI classification pipeline that reads architectural floor plans, handles noisy images and reduced environment setup from 8 hours to 45 minutes.",
     emoji: "🌤️",
+  },
+  {
+    title: "Dijkstra's Algorithm on Dynamic Graphs: Indoor Navigation in Practice",
+    tag: "Graph Theory",
+    desc: "Turning weighted graphs into real-time multi-floor pathfinding — edge-weight updates, node snapping logic in the Canvas API, and keeping the graph accurate as venues change.",
+    emoji: "🧭",
   },
 ];
 
@@ -388,7 +394,7 @@ export default function Portfolio() {
         body::after { content:''; position:fixed; inset:0; z-index:0; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E"); opacity:0.55; }
 
         /* NAV */
-        nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:0 3rem; height:66px; transition: background 0.4s, box-shadow 0.4s; }
+        nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; align-items:center; justify-content:space-between; padding:0 4rem; height:66px; transition: background 0.4s, box-shadow 0.4s; }
         nav.scrolled { background:rgba(238,245,240,0.94); backdrop-filter:blur(18px); box-shadow:0 1px 0 var(--border); }
         .nav-logo { font-family:var(--fhead); font-size:1.28rem; color:var(--forest); display:flex; align-items:center; gap:0.55rem; }
         .nav-links { display:flex; gap:2.4rem; list-style:none; align-items:center; }
@@ -411,7 +417,7 @@ export default function Portfolio() {
         .hero-spec { font-size:0.72rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--moss); background:rgba(90,124,78,0.09); border:1px solid rgba(90,124,78,0.22); border-radius:3px; padding:0.3rem 0.9rem; display:inline-block; margin-bottom:0.9rem; }
         .hero-title { font-size:clamp(1rem,2.5vw,1.2rem); font-weight:300; color:var(--sky2); letter-spacing:0.05em; margin-bottom:1.7rem; min-height:2rem; font-family:var(--fsub); }
         .hero-desc { font-size:0.97rem; line-height:1.9; color:var(--muted); margin-bottom:2.4rem; max-width:490px; font-family:var(--fsub); }
-        .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin-left:2rem; }
+        .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; }
         .btn { font-size:0.72rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; padding:0.85rem 2.2rem; border-radius:4px; cursor:pointer; transition:all 0.24s; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; font-family:var(--fbody); }
         .btn-pri { background:var(--sky); color:#fff; box-shadow:4px 4px 0 var(--sky2), 0 6px 20px rgba(59,143,196,0.28); }
         .btn-pri:hover { background:var(--sky2); transform:translate(-2px,-2px); box-shadow:7px 7px 0 #0e4d73; }
@@ -469,7 +475,7 @@ export default function Portfolio() {
         .t-bullets li::before { content:'◈'; position:absolute; left:0; color:var(--moss); font-size:0.7rem; top:0.7rem; }
 
         /* PROJECTS */
-        .proj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(518px,1fr)); gap:2.5rem; }
+        .proj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(527px,1fr)); gap:1.5rem; }
         .proj-card { background:var(--light); border:1px solid var(--border); border-radius:10px; padding:2.5rem; position:relative; overflow:hidden; box-shadow:6px 6px 0 rgba(60,140,100,0.09); transition:box-shadow 0.25s; }
         .proj-card:hover { box-shadow:10px 10px 0 rgba(60,140,100,0.16); }
         .proj-card::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg, var(--sky), var(--water), var(--forest)); }
@@ -496,15 +502,15 @@ export default function Portfolio() {
         .proj-toggle:hover { color:var(--sky); }
 
         /* SKILLS */
-        .skill-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(339px,1fr)); gap:0.8rem; }
+        .skill-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(344px,1fr)); gap:1.6rem; }
         .sg { background:var(--light); border:1px solid var(--border); border-radius:8px; padding:0.8rem; box-shadow:4px 4px 0 rgba(60,140,100,0.07); }
         .sg-head { display:flex; align-items:center; gap:0.6rem; font-size:0.67rem; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--sky2); margin-bottom:1.1rem; }
         .chips { display:flex; flex-wrap:wrap; gap:0.5rem; }
-        .chip { font-size:0.8rem; padding:0.35rem 0.9rem; border-radius:4px; background:var(--bg); border:1px solid var(--border); color:var(--text); transition:all 0.2s; cursor:default; }
+        .chip { font-size:0.8rem; padding:0.35rem 0.6rem; border-radius:4px; background:var(--bg); border:1px solid var(--border); color:var(--text); transition:all 0.2s; cursor:default; }
         .chip:hover { background:var(--sky); color:#fff; border-color:var(--sky); transform:translateY(-2px); box-shadow:0 4px 12px rgba(59,143,196,0.25); }
 
         /* NOTES / BLOG */
-        .notes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:1.8rem; }
+        .notes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(399px,1fr)); gap:1.8rem; }
         .note-card { background:var(--light); border:1px solid var(--border); border-radius:10px; padding:2rem; box-shadow:4px 4px 0 rgba(60,140,100,0.07); transition:all 0.25s; position:relative; overflow:hidden; }
         .note-card:hover { box-shadow:8px 8px 0 rgba(60,140,100,0.14); transform:translate(-2px,-2px); }
         .note-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--water), var(--forest)); }
@@ -594,10 +600,11 @@ export default function Portfolio() {
           <div className="hero-tagline">Software Engineer</div>
           <h1 className="hero-name">Sudeep<br />Bhimannavar</h1>
           {/* Gemini rec #1: specialisation badge */}
+          <div className="hero-spec">Full-Stack Engineer · Generative AI & Scalable SaaS</div>
           <div className="hero-title">
             <Typewriter strings={["Full-Stack Engineer", "SaaS Architect", "AI Systems Builder", "Backend Specialist", "10K+ DAU Platform Builder"]} />
           </div>
-          <p className="hero-desc">Building production-grade distributed systems that scale — from concept to 50,000+ daily requests. Django × React × AI, shipped with discipline and precision.</p>
+          <p className="hero-desc">Architecting distributed SaaS systems that scale to 50,000+ req/day. Built AI-powered navigation with 90% accuracy, multi-tenant platforms for 10,000+ DAU, and optimized query latency by 60%. Django × React × AI × Graph Theory, shipped with discipline.</p>
           {/* Gemini rec #1: Resume CTA visible immediately */}
           <div className="hero-cta">
             <a href="#projects" className="btn btn-pri" onClick={e => { e.preventDefault(); scrollTo("projects"); }}>View My Work</a>
@@ -690,7 +697,7 @@ export default function Portfolio() {
         <section id="experience">
           <div className="sec">
             <div className="eyebrow">02 — Battle-Tested</div>
-            <h2 className="sec-title">Where I've Shipped Production <br /> Systems</h2>
+            <h2 className="sec-title">Where I've Shipped Production Systems</h2>
             <div className="timeline">
               <Reveal>
                 <div className="t-item">
@@ -699,10 +706,13 @@ export default function Portfolio() {
                   <div className="t-company">Vividhity Ventures Private Limited</div>
                   <div className="t-meta">July 2025 – Present · Bengaluru, Karnataka, India</div>
                   <ul className="t-bullets">
-                    <li>Designed, developed and deployed <strong>Formalls</strong> — a production multi-tenant SaaS (Django + React.js + MySQL) serving 5+ enterprise clients and 10,000+ daily active users across shop management, booking and event modules; ensured WCAG 2.1 AA compliance.</li>
-                    <li>Built <strong>MallNav</strong> — AI-powered indoor navigation using Dijkstra's algorithm on dynamic corridor graphs; integrated Claude Vision API + OpenCV to auto-classify 50+ POIs at 90% accuracy, reducing navigation time by 40%.</li>
-                    <li>Designed and maintained 15+ RESTful APIs at 50,000+ req/day and 99.9% uptime; resolved SQL query bottlenecks cutting average response time by 60%; authored full technical documentation.</li>
-                    <li>Enforced 85%+ test coverage through TDD and CI/CD in an 8-member Agile team; integrated WhatsApp Business API reducing ticket volume by 45% and achieving 95% CSAT.</li>
+                    <li>Architected and deployed <strong>Formalls</strong> — a production multi-tenant SaaS managing 100+ stores, 20+ restaurants and 500+ daily bookings; designed normalized MySQL schemas for strict cross-tenant data isolation serving 5+ enterprise clients.</li>
+                    <li>Implemented <strong>5-tier JWT-based RBAC</strong> securing data for 10,000+ users; scaled backend infrastructure to handle 50,000+ daily requests at 99.9% uptime using Gunicorn and WhiteNoise.</li>
+                    <li>Engineered <strong>MallNav</strong> — Claude Vision API + OpenCV pipeline to auto-classify POIs with 90% accuracy, reducing setup time from 8 hours to 45 minutes; Dijkstra's algorithm on dynamic weighted graphs powers multi-floor pathfinding.</li>
+                    <li>Developed a <strong>collaborative filtering recommendation engine</strong> based on user visit/purchase history, increasing engagement by 30% and average transaction value by 25%.</li>
+                    <li>Optimized SQL query bottlenecks and database indexing, achieving <strong>60% reduction in average response latency</strong> for high-traffic analytical endpoints.</li>
+                    <li>Integrated <strong>WhatsApp Business API</strong> for 24/7 automated support, reducing support ticket volume by 45% while maintaining 95% CSAT score.</li>
+                    <li>Enforced <strong>85%+ test coverage</strong> through TDD and peer reviews in an 8-member Agile team; authored comprehensive API documentation.</li>
                   </ul>
                 </div>
               </Reveal>
@@ -774,7 +784,7 @@ export default function Portfolio() {
         <section id="skills">
           <div className="sec">
             <div className="eyebrow">04 — The Arsenal</div>
-            <h2 className="sec-title">Tools &amp; Technologies Grouped<br /> by Domain</h2>
+            <h2 className="sec-title">Tools &amp; Technologies Grouped <br />by Domain</h2>
             <div className="skill-grid">
               {SKILLS.map((g, i) => (
                 <Reveal key={g.cat} delay={i * 70}>
@@ -793,8 +803,8 @@ export default function Portfolio() {
       <section id="notes">
         <div className="sec">
           <div className="eyebrow">05 — Notes from the Trenches</div>
-          <h2 className="sec-title">Things I've Built,Broken &amp; Learned</h2>
-          <p style={{ color: "var(--muted)", maxWidth: 460, margin: "0 auto", lineHeight: 1.88, fontSize: "0.96rem", fontFamily: "var(--fsub)", marginBottom: "1rem" }}>
+          <h2 className="sec-title">Things I've Built, Broken &amp; Learned</h2>
+          <p style={{ color: "var(--muted)", maxWidth: 460, margin: "0 auto", marginBottom: "1rem", lineHeight: 1.88, fontSize: "0.96rem", fontFamily: "var(--fsub)" }}>
             Writing is thinking out loud. These are posts I'm working on — explaining complex ideas I've had to figure out the hard way in production.
           </p>
           <div className="notes-grid">
@@ -830,6 +840,7 @@ export default function Portfolio() {
                 { icon: "✉️", label: "bhimannavarsudeep26@gmail.com", href: "mailto:bhimannavarsudeep26@gmail.com" },
                 { icon: "💼", label: "linkedin/sudeepbhimannavar-dev26", href: "https://linkedin.com/in/sudeepbhimannavar-dev26" },
                 { icon: "🐙", label: "github/Sudeep2642", href: "https://github.com/Sudeep2642" },
+                { icon: "🌐", label: "sudeep-bhimannavar.vercel.app", href: "https://sudeep-bhimannavar.vercel.app" },
                 { icon: "📱", label: "+91-7760531692", href: "tel:+917760531692" },
               ].map(c => (
                 <Reveal key={c.label}>
