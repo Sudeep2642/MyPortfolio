@@ -572,7 +572,7 @@ export default function Portfolio() {
           {NAV.map(s => (
             <li key={s}><a href={`#${s}`} className={active === s ? "active" : ""} onClick={e => { e.preventDefault(); scrollTo(s); }}>{s}</a></li>
           ))}
-          <li><a href="/Sudeep_Bhimannavar_Software_Engineer.pdf" className="nav-resume" download>↓ Resume</a></li>
+          <li><a href="public/Sudeep_Bhimannavar_Software_Engineer.pdf" className="nav-resume" download>↓ Resume</a></li>
         </ul>
         <div className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
           <span /><span /><span />
@@ -583,7 +583,7 @@ export default function Portfolio() {
         <div className="mob-menu">
           <div style={{ fontFamily: "var(--fhead)", fontSize: "1.6rem", color: "var(--forest)", marginBottom: "1rem" }}>🌿 Menu</div>
           {NAV.map(s => <a key={s} href={`#${s}`} onClick={e => { e.preventDefault(); scrollTo(s); }}>{s}</a>)}
-          <a href="/Sudeep_Bhimannavar_Software_Engineer.pdf" download style={{ fontSize: "0.9rem", background: "var(--sky)", color: "#fff", padding: "0.6rem 1.6rem", borderRadius: "4px", textDecoration: "none" }}>↓ Download Resume</a>
+          <a href="public/Sudeep_Bhimannavar_Software_Engineer.pdf" download style={{ fontSize: "0.9rem", background: "var(--sky)", color: "#fff", padding: "0.6rem 1.6rem", borderRadius: "4px", textDecoration: "none" }}>↓ Download Resume</a>
         </div>
       )}
 
