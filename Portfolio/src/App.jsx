@@ -778,7 +778,7 @@ export default function Portfolio() {
     /* SKILLS */
     .skill-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:1.6rem; }
     .sg {
-      background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1.8rem;
+      background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:0.4rem;
       backdrop-filter:blur(10px); transition:all .3s; position:relative; overflow:hidden;
     }
     .sg::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--sg-c,var(--cyan)),transparent); }
@@ -790,7 +790,7 @@ export default function Portfolio() {
     }
     .chips { display:flex; flex-wrap:wrap; gap:.45rem; }
     .chip {
-      font-size:.8rem; padding:.36rem .78rem; border-radius:4px;
+      font-size:.8rem; padding:.30rem .20rem; border-radius:4px;
       background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--muted);
       transition:all .22s; cursor:default;
     }
