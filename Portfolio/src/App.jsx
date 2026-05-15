@@ -717,7 +717,7 @@ export default function Portfolio() {
     .t-bullets li strong { color:var(--text); font-weight:600; }
 
     /* PROJECTS */
-    .proj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(500px,1fr)); gap:2rem; }
+    .proj-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(555px,1fr)); gap:2rem; }
     .proj-card {
       background:var(--panel); border:1px solid var(--border);
       border-radius:14px; padding:2.6rem; position:relative; overflow:hidden;
@@ -1117,7 +1117,7 @@ export default function Portfolio() {
       <div className="bg-alt">
         <section id="contact" style={{ textAlign: "center" }}>
           <div className="sec">
-            <div className="eyebrow" style={{ justifyContent: "center" }}><span className="eyebrow-num">06</span> — Connect</div>
+            <div className="eyebrow" ><span className="eyebrow-num">06</span> — Connect</div>
             <h2 className="sec-title" style={{ textAlign: "center" }}>Open to Roles &amp; <em>Collaborations</em></h2>
             <p style={{ color: "var(--muted)", maxWidth: 500, margin: "0 auto", lineHeight: 1.94, fontSize: ".97rem" }}>
               Building from scratch, scaling an existing system, or need someone who takes full end-to-end ownership? Let's build something that matters.
