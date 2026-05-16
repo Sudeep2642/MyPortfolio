@@ -75,20 +75,14 @@ const CAREER = [
   {
     role: "Software Engineer",
     company: "Vividhity Ventures Pvt. Ltd.",
-    period: "2025",
+    period: "Jul 2025 - Present",
     desc: "Architected Formalls & MallNav from scratch. 5-tier JWT RBAC securing 10,000+ users, scaled backend to 50,000+ daily requests at 99.9% uptime, cut query latency 60%, integrated WhatsApp Business API — 45% ticket reduction.",
   },
   {
-    role: "BCA Graduate",
-    company: "Bharatesh College of Computer Applications, Belagavi",
-    period: "2023",
-    desc: "Bachelor of Computer Applications — data structures, algorithms, system design, web development, database management.",
-  },
-  {
-    role: "Software Engineer · MCA Student",
-    company: "Vividhity Ventures · Jain University",
-    period: "NOW",
-    desc: "Shipping AI-powered SaaS in production while pursuing MCA at Jain University. Actively seeking senior full-stack roles where I can own end-to-end delivery.",
+    role: "Internship",
+    company: "Palle Technologies, Bengaluru",
+    period: "Feb 2025 - Jun 2025",
+    desc: "Completed intensive Python Full Stack Development program covering HTML, CSS, JavaScript, React.js, Python, Django, REST APIs, and MySQL.Gained hands-on experience in building end-to-end web applications with modern development practices and industry-standard tools",
   },
 ];
 
