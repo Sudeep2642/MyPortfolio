@@ -1,50 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:      #04080f;
-  --bg2:     #070d1a;
-  --bg3:     #0c1525;
-  --panel:   rgba(8,16,30,0.88);
-  --glass:   rgba(12,21,37,0.72);
-  --border:  rgba(0,200,255,0.10);
-  --border2: rgba(110,100,255,0.12);
-  --glow:    rgba(0,200,255,0.06);
-  --text:    #ddeeff;
-  --muted:   rgba(160,200,235,0.65);
-  --stone:   rgba(110,150,185,0.45);
-  --cyan:    #00c8ff;
-  --cyan2:   #00aadd;
-  --purple:  #7c6fff;
-  --purple2: #5a50e0;
-  --green:   #00ffb3;
-  --gold:    #ffd060;
-  --red:     #ff6b7a;
-  --fhead:   'Syne', sans-serif;
-  --fbody:   'Space Grotesk', sans-serif;
-  --fmono:   'JetBrains Mono', monospace;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--fbody);
-  overflow-x: hidden;
+  font-family: "Geist", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  color: #eae5ec;
+  background-color: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  -webkit-user-select: none;
+
+  --accent:   #c2a4ff;
+  --accent2:  #c481ff;
+  --accent3:  #aa42ff;
+  --bg:       #0b080c;
+  --cWidth:   calc(100% - 30px);
+  --cMaxWidth: 1920px;
+  --vh: 100vh;
+  --vh: 100svh;
 }
 
-#root { width: 100%; min-height: 100vh; }
+html, body { overflow-x: hidden; }
+body { background-color: var(--bg); margin: 0; max-width: 100vw; }
 
-::selection { background: rgba(0,200,255,0.28); color: #fff; }
+h1,h2,h3,h4,h5,h6 { font-family: "Geist", sans-serif; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--accent); }
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg2); }
-::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, var(--cyan), var(--purple)); border-radius: 2px; }
-
-/* Scanline overlay */
-body::after {
-  content: '';
-  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,200,255,0.012) 2px, rgba(0,200,255,0.012) 4px);
+@media screen and (min-width: 768px) {
+  :root { --cWidth: 94%; }
 }
