@@ -810,7 +810,7 @@ export default function App() {
             </li>
           ))}
           <li>
-            <MagneticBtn href="/Sudeep_Bhimannavar_Software_Engineer.pdf" download isMobile={isMobile}
+            <MagneticBtn href="/SudeepBhimannavar_Software_Engineer.pdf" download isMobile={isMobile}
               style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", padding: "8px 20px", border: "1px solid rgba(194,164,255,0.4)", borderRadius: 3, color: "var(--accent)", textDecoration: "none", background: "transparent" }}>
               Resume ↓
             </MagneticBtn>
