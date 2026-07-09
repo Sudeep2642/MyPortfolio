@@ -43,10 +43,10 @@ function Marquee({ children, speed = 30 }) {
 }
 
 /* ─── DATA ─────────────────────────────────────────────────────────────────── */
-const SKILLS_BACKEND = ["Python", "Django", "Django REST", "Node.js", "JWT", "Gunicorn", "WhiteNoise", "TDD", "Docker", "CI/CD"];
+const SKILLS_BACKEND = ["Python", "Django", "Django REST", "JWT", "TDD", "Docker", "CI/CD"];
 const SKILLS_FRONTEND = ["React.js", "Next.js", "JavaScript ES6+", "HTML5", "CSS3", "WCAG 2.1 AA", "ARIA", "Responsive Design"];
 const SKILLS_AI = ["Claude Vision API", "OpenCV", "Computer Vision", "Dijkstra's", "Graph Theory", "NetworkX", "NLP", "Generative AI"];
-const SKILLS_DB = ["MySQL", "PostgreSQL", "SQLite", "Firebase", "AWS", "Railway", "Docker", "Git", "System Design"];
+const SKILLS_DB = ["MySQL", "PostgreSQL", "AWS", "Docker", "Git", "System Design"];
 
 const PROJECTS = [
   {
@@ -180,7 +180,27 @@ function Typewriter({ strings }) {
   );
 }
 
-/* ─── THREE.JS GLOBE ─────────────────────────────────────────────────────── */
+/* ─── GLOW SPRITE TEXTURE (shared) ───────────────────────────────────────── */
+function makeGlowTexture() {
+  const size = 128;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  const grd = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  grd.addColorStop(0, "rgba(255,255,255,1)");
+  grd.addColorStop(0.35, "rgba(255,255,255,0.5)");
+  grd.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, size, size);
+  return new THREE.CanvasTexture(canvas);
+}
+
+/* ─── THREE.JS PATHFINDING NETWORK ───────────────────────────────────────────
+   Signature hero visual: a 3-floor node graph modeled on MallNav's real
+   navigation engine. A live Dijkstra shortest-path run animates between a
+   random origin and destination across floors, echoing the actual
+   Claude Vision + NetworkX pipeline in production.
+────────────────────────────────────────────────────────────────────────── */
 function GlobeScene({ isMobile }) {
   const mountRef = useRef(null);
 
@@ -195,45 +215,96 @@ function GlobeScene({ isMobile }) {
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, W / H, 0.1, 100);
-    camera.position.z = 3.2;
+    const camera = new THREE.PerspectiveCamera(40, W / H, 0.1, 100);
+    camera.position.set(0, 0.35, 4.3);
 
-    const globe = new THREE.Mesh(
-      new THREE.SphereGeometry(1, 48, 48),
-      new THREE.MeshPhongMaterial({ color: 0x100818, emissive: 0x1a0530, specular: 0x9944dd, shininess: 50, transparent: true, opacity: 0.97 })
-    );
-    scene.add(globe);
+    const group = new THREE.Group();
+    scene.add(group);
+    const glowTex = makeGlowTexture();
 
-    const gridMat = new THREE.LineBasicMaterial({ color: 0xc2a4ff, transparent: true, opacity: 0.1 });
-    for (let lat = -80; lat <= 80; lat += 20) {
-      const r = Math.cos((lat * Math.PI) / 180), y = Math.sin((lat * Math.PI) / 180);
-      const pts = [];
-      for (let i = 0; i <= 80; i++) { const a = (i / 80) * Math.PI * 2; pts.push(new THREE.Vector3(r * Math.cos(a), y, r * Math.sin(a))); }
-      scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
+    /* ── Build a 3-floor node graph ── */
+    const FLOORS = 3;
+    const PER_FLOOR = 7;
+    const FLOOR_GAP = 1.05;
+    const nodes = [];
+    let uid = 0;
+    for (let f = 0; f < FLOORS; f++) {
+      const y = (f - (FLOORS - 1) / 2) * FLOOR_GAP;
+      for (let i = 0; i < PER_FLOOR; i++) {
+        const a = (i / PER_FLOOR) * Math.PI * 2 + f * 0.45;
+        const r = 0.85 + Math.sin(i * 2.1 + f) * 0.22;
+        nodes.push({ id: uid++, floor: f, pos: new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r) });
+      }
     }
-    for (let lon = 0; lon < 360; lon += 20) {
-      const pts = [], a = (lon * Math.PI) / 180;
-      for (let i = 0; i <= 64; i++) { const lat = -90 + (i / 64) * 180, r = Math.cos((lat * Math.PI) / 180), y = Math.sin((lat * Math.PI) / 180); pts.push(new THREE.Vector3(r * Math.cos(a), y, r * Math.sin(a))); }
-      scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), gridMat));
+
+    const edges = [];
+    const addEdge = (a, b) => edges.push([a, b, a.pos.distanceTo(b.pos)]);
+    for (let f = 0; f < FLOORS; f++) {
+      const floorNodes = nodes.filter(n => n.floor === f);
+      floorNodes.forEach((n, i) => {
+        addEdge(n, floorNodes[(i + 1) % floorNodes.length]);
+        if (i % 2 === 0) addEdge(n, floorNodes[(i + 3) % floorNodes.length]);
+      });
+    }
+    for (let f = 0; f < FLOORS - 1; f++) {
+      addEdge(nodes[f * PER_FLOOR], nodes[(f + 1) * PER_FLOOR]);
+      addEdge(nodes[f * PER_FLOOR + 3], nodes[(f + 1) * PER_FLOOR + 3]);
     }
 
-    [{ s: 1.07, c: 0xcc55ff, o: 0.14 }, { s: 1.18, c: 0x9922ee, o: 0.07 }, { s: 1.35, c: 0x660099, o: 0.035 }].forEach(({ s, c, o }) => {
-      scene.add(new THREE.Mesh(new THREE.SphereGeometry(s, 32, 32), new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: o, side: THREE.BackSide })));
+    const adj = new Map();
+    nodes.forEach(n => adj.set(n.id, []));
+    edges.forEach(([a, b, w]) => { adj.get(a.id).push([b.id, w]); adj.get(b.id).push([a.id, w]); });
+
+    function dijkstra(startId, endId) {
+      const dist = new Map(nodes.map(n => [n.id, Infinity]));
+      const prev = new Map();
+      const visited = new Set();
+      dist.set(startId, 0);
+      while (visited.size < nodes.length) {
+        let u = null, best = Infinity;
+        dist.forEach((d, k) => { if (!visited.has(k) && d < best) { best = d; u = k; } });
+        if (u === null) break;
+        visited.add(u);
+        if (u === endId) break;
+        adj.get(u).forEach(([v, w]) => {
+          const nd = dist.get(u) + w;
+          if (nd < dist.get(v)) { dist.set(v, nd); prev.set(v, u); }
+        });
+      }
+      if (!prev.has(endId) && startId !== endId) return null;
+      const path = []; let cur = endId;
+      while (cur !== undefined) { path.unshift(cur); cur = prev.get(cur); }
+      return path;
+    }
+
+    /* ── Floor rings (sell the "multi-floor" concept) ── */
+    for (let f = 0; f < FLOORS; f++) {
+      const y = (f - (FLOORS - 1) / 2) * FLOOR_GAP;
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.18, 0.0025, 8, 72), new THREE.MeshBasicMaterial({ color: 0xaa42ff, transparent: true, opacity: 0.09 }));
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = y;
+      group.add(ring);
+    }
+
+    /* ── Nodes + halos ── */
+    const nodeGeo = new THREE.SphereGeometry(0.032, 16, 16);
+    const nodeMeshes = new Map();
+    nodes.forEach(n => {
+      const m = new THREE.Mesh(nodeGeo, new THREE.MeshBasicMaterial({ color: 0xc2a4ff, transparent: true, opacity: 0.55 }));
+      m.position.copy(n.pos);
+      group.add(m);
+      const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xc2a4ff, transparent: true, opacity: 0.22, depthWrite: false }));
+      halo.scale.set(0.2, 0.2, 1);
+      halo.position.copy(n.pos);
+      group.add(halo);
+      nodeMeshes.set(n.id, m);
     });
 
-    const ringDefs = [
-      { r: 1.42, c: 0xc481ff, a: 0.38, rx: Math.PI / 2.2, rz: 0.4, spd: 0.007 },
-      { r: 1.68, c: 0xaa42ff, a: 0.24, rx: Math.PI / 3, rz: -0.5, spd: -0.004 },
-      { r: 1.95, c: 0xfb8dff, a: 0.13, rx: Math.PI / 1.7, rz: 1.1, spd: 0.003 },
-    ];
-    const rings = ringDefs.map(d => {
-      const m = new THREE.Mesh(new THREE.TorusGeometry(d.r, 0.005, 8, 120), new THREE.MeshBasicMaterial({ color: d.c, transparent: true, opacity: d.a }));
-      m.rotation.set(d.rx, 0, d.rz);
-      m.userData.spd = d.spd;
-      scene.add(m);
-      return m;
-    });
+    /* ── Static dim edges ── */
+    const edgeMat = new THREE.LineBasicMaterial({ color: 0x9944dd, transparent: true, opacity: 0.14 });
+    edges.forEach(([a, b]) => group.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([a.pos, b.pos]), edgeMat)));
 
+    /* ── Ambient starfield + lights ── */
     const starPos = new Float32Array(400 * 3);
     for (let i = 0; i < 400 * 3; i++) starPos[i] = (Math.random() - 0.5) * 35;
     const starGeo = new THREE.BufferGeometry();
@@ -241,16 +312,49 @@ function GlobeScene({ isMobile }) {
     scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0xffffff, size: 0.022, transparent: true, opacity: 0.5 })));
 
     scene.add(new THREE.AmbientLight(0x100820, 2.5));
-    const pl1 = new THREE.PointLight(0xfb8dff, 6, 10); pl1.position.set(2, 2, 2); scene.add(pl1);
+    const pl1 = new THREE.PointLight(0xfb8dff, 5, 10); pl1.position.set(2, 1.5, 2); scene.add(pl1);
     const pl2 = new THREE.PointLight(0x5500ff, 3, 10); pl2.position.set(-3, -1, 1); scene.add(pl2);
-    const pl3 = new THREE.PointLight(0xc481ff, 2, 8); pl3.position.set(0, 3, -2); scene.add(pl3);
 
-    let t = 0, targetX = 0, targetY = 0;
+    /* ── Live shortest-path animation ── */
+    let pathCurve = null, pathLine = null;
+    const CYCLE_MS = 3400, TRAVEL_FRAC = 0.62;
+    let cycleTime = 0;
+
+    const packet = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xfb8dff, transparent: true, opacity: 0.95, depthWrite: false }));
+    packet.scale.set(0.16, 0.16, 1);
+    group.add(packet);
+
+    function pickNewPath() {
+      const fa = Math.floor(Math.random() * FLOORS);
+      let fb = Math.floor(Math.random() * FLOORS);
+      while (fb === fa) fb = Math.floor(Math.random() * FLOORS);
+      const A = nodes.filter(n => n.floor === fa), B = nodes.filter(n => n.floor === fb);
+      const start = A[Math.floor(Math.random() * A.length)];
+      const end = B[Math.floor(Math.random() * B.length)];
+      const path = dijkstra(start.id, end.id);
+      if (!path || path.length < 2) return;
+
+      nodeMeshes.forEach(m => { m.material.opacity = 0.55; m.scale.set(1, 1, 1); });
+      nodeMeshes.get(start.id).material.opacity = 1;
+      nodeMeshes.get(end.id).material.opacity = 1;
+      nodeMeshes.get(start.id).scale.set(1.6, 1.6, 1.6);
+      nodeMeshes.get(end.id).scale.set(1.6, 1.6, 1.6);
+
+      const pts = path.map(id => nodeMeshes.get(id).position);
+      pathCurve = new THREE.CatmullRomCurve3(pts, false, "catmullrom", 0.1);
+      if (pathLine) { group.remove(pathLine); pathLine.geometry.dispose(); pathLine.material.dispose(); }
+      pathLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pathCurve.getPoints(64)), new THREE.LineBasicMaterial({ color: 0xfb8dff, transparent: true, opacity: 0 }));
+      group.add(pathLine);
+      cycleTime = 0;
+    }
+    pickNewPath();
+    const cycleTimer = setInterval(pickNewPath, CYCLE_MS);
+
+    let targetX = 0, targetY = 0;
     const onMove = (e) => {
       targetX = ((e.clientX / window.innerWidth) - 0.5) * 0.5;
       targetY = ((e.clientY / window.innerHeight) - 0.5) * -0.35;
     };
-    // Touch support for globe parallax
     const onTouch = (e) => {
       if (!e.touches[0]) return;
       targetX = ((e.touches[0].clientX / window.innerWidth) - 0.5) * 0.3;
@@ -267,26 +371,46 @@ function GlobeScene({ isMobile }) {
     };
     window.addEventListener("resize", onResize);
 
-    let animId;
+    const clock = new THREE.Clock();
+    let t = 0, animId;
     const animate = () => {
       animId = requestAnimationFrame(animate);
-      t += 0.006;
-      globe.rotation.y += 0.0018;
+      const dt = clock.getDelta() * 1000;
+      t += dt * 0.0006;
+      cycleTime += dt;
+
+      group.rotation.y += 0.0016;
       camera.position.x += (targetX * 0.4 - camera.position.x) * 0.04;
-      camera.position.y += (targetY * 0.3 - camera.position.y) * 0.04;
-      camera.lookAt(scene.position);
-      rings.forEach(r => { r.rotation.z += r.userData.spd; });
-      pl1.intensity = 6 + Math.sin(t) * 1.8;
-      pl2.intensity = 3 + Math.sin(t * 0.7 + 1) * 0.9;
+      camera.position.y += (0.35 + targetY * 0.3 - camera.position.y) * 0.04;
+      camera.lookAt(0, 0, 0);
+
+      if (pathCurve) {
+        const travel = Math.min(cycleTime / (CYCLE_MS * TRAVEL_FRAC), 1);
+        const pos = pathCurve.getPointAt(Math.min(travel, 0.999));
+        packet.position.copy(pos);
+        const fadeIn = Math.min(travel * 3, 1);
+        const fadeOut = travel >= 1 ? Math.max(0, 1 - (cycleTime - CYCLE_MS * TRAVEL_FRAC) / (CYCLE_MS * (1 - TRAVEL_FRAC))) : 1;
+        pathLine.material.opacity = 0.85 * fadeIn * fadeOut;
+        packet.material.opacity = 0.95 * fadeOut;
+      }
+
+      pl1.intensity = 5 + Math.sin(t * 8) * 1.5;
+      pl2.intensity = 3 + Math.sin(t * 5 + 1) * 0.8;
       renderer.render(scene, camera);
     };
     animate();
 
     return () => {
       cancelAnimationFrame(animId);
+      clearInterval(cycleTimer);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("touchmove", onTouch);
       window.removeEventListener("resize", onResize);
+      scene.traverse(obj => {
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) { Array.isArray(obj.material) ? obj.material.forEach(m => m.dispose()) : obj.material.dispose(); }
+      });
+      glowTex.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
     };
@@ -610,7 +734,7 @@ export default function App() {
     @keyframes blobFloat2 { 0%,100%{transform:translate(0,0) scale(1)}   50%{transform:translate(-30px,40px) scale(0.97)} }
 
     .nav-hl { position:relative; overflow:hidden; display:flex; }
-    .hl-inner { transition:transform 0.32s cubic-bezier(0.23,1,0.32,1); display:flex; flex-direction:column; position:relative; }
+    .hl-inner { transition:transform 0.32s cubic-bezier(0.23,1,0.32,1); display:flex; flex-direction:column; position:relative; padding:8px; }
     .hl-dup { position:absolute; top:100%; left:0; color:var(--accent); white-space:nowrap; }
     .nav-hl:hover .hl-inner { transform:translateY(-100%); }
 
@@ -760,6 +884,47 @@ export default function App() {
     @supports(padding: max(0px)){
       nav { padding-left: max(0px, env(safe-area-inset-left)) !important; padding-right: max(0px, env(safe-area-inset-right)) !important; }
     }
+
+    /* ────── LARGE DESKTOP (≥ 1600px) ────── */
+    @media(min-width:1600px){
+      :root { --cMaxWidth: 1600px; }
+    }
+
+    /* ────── ULTRA-WIDE MONITORS / 4K / TV (≥ 2200px) ────── */
+    @media(min-width:2200px){
+      :root { --cMaxWidth: 1880px; --cWidth: 82%; }
+      body { font-size: 18px; }
+      .globe-wrapper { width: clamp(280px,40vw,760px) !important; }
+      .social-rail { left: 4%; }
+    }
+
+    @media(min-width:3000px){
+      :root { --cMaxWidth: 2200px; --cWidth: 78%; }
+      body { font-size: 20px; }
+    }
+
+    /* ────── SHORT VIEWPORT / LANDSCAPE PHONES & TABLETS (height ≤ 500px) ────── */
+    @media(max-height:500px) and (orientation:landscape){
+      #landing { min-height: 100vh !important; }
+      .hero-mobile-content { padding-top: 70px !important; gap: 8px !important; }
+      .globe-wrapper { height: 200px !important; margin-top: -10px !important; }
+      .section-pad { padding-top: 40px !important; padding-bottom: 40px !important; }
+    }
+
+    /* ────── FOLDABLES / NARROW TABLETS (601px–1000px) portrait refinement ────── */
+    @media(min-width:601px) and (max-width:1000px) and (orientation:portrait){
+      .stats-grid { grid-template-columns: repeat(4,1fr) !important; }
+    }
+
+    /* ────── HIGH-DPI SCREEN CRISPNESS ────── */
+    @media(-webkit-min-device-pixel-ratio:2), (min-resolution:192dpi){
+      .sep, .career-line { background-size: 100% 100%; }
+    }
+
+    /* ────── REDUCED MOTION ────── */
+    @media(prefers-reduced-motion: reduce){
+      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+    }
   `;
 
   useEffect(() => {
@@ -810,7 +975,7 @@ export default function App() {
             </li>
           ))}
           <li>
-            <MagneticBtn href="/Sudeep_Bhimannavar_SoftwareEngineer.pdf" download isMobile={isMobile}
+            <MagneticBtn href="/SudeepBhimannavar's_SoftwareEngineer.pdf" download isMobile={isMobile}
               style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", padding: "8px 20px", border: "1px solid rgba(194,164,255,0.4)", borderRadius: 3, color: "var(--accent)", textDecoration: "none", background: "transparent" }}>
               Resume ↓
             </MagneticBtn>
@@ -832,7 +997,7 @@ export default function App() {
       </div>
 
       {/* Resume fixed right (desktop) */}
-      <a href="/Sudeep_Bhimannavar_Software_Engineer.pdf" download data-hover className="resume-fixed"
+      <a href="/SudeepBhimannavar's_Software_Engineer.pdf" download data-hover className="resume-fixed"
         style={{ position: "fixed", bottom: 40, right: 0, zIndex: 600, fontWeight: 600, fontSize: 12, letterSpacing: "0.35em", color: "rgba(255,255,255,0.3)", textDecoration: "none", transition: "color 0.3s", transform: "translateX(100%) rotate(-90deg)", transformOrigin: "left bottom", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 6 }}
         onMouseEnter={e => e.currentTarget.style.color = "var(--accent)"}
         onMouseLeave={e => e.currentTarget.style.color = "rgba(255,255,255,0.3)"}>
@@ -891,16 +1056,19 @@ export default function App() {
             <div style={{ position: "absolute", width: 420, height: 420, borderRadius: "50%", background: "#ee88ff", filter: "blur(60px)", opacity: 0.14, bottom: "-8%", left: "50%", transform: "translateX(-50%) scale(1.3)", zIndex: 1 }} />
             <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 220, background: "linear-gradient(to top,var(--bg) 40%,transparent)", zIndex: 2 }} />
             <GlobeScene isMobile={isMobile} />
+            <div style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", fontSize: 10, letterSpacing: "0.25em", color: "rgba(255,255,255,0.28)", textTransform: "uppercase", zIndex: 3, pointerEvents: "none", whiteSpace: "nowrap" }}>
+              Live Dijkstra pathfinding · MallNav engine
+            </div>
           </div>
 
           {/* Desktop right panel */}
           <div className="hero-side-right" style={{ position: "absolute", zIndex: 9, top: "50%", left: "66%", transform: "translateY(-50%)" }}>
             <Reveal from="right" delay={100}>
               <p style={{ margin: 0, fontSize: 20, fontWeight: 300, letterSpacing: "0.12em", color: "var(--accent)", marginBottom: 4 }}>A Creative</p>
-              <h2 style={{ margin: 0, fontWeight: 700, fontSize: "clamp(26px,3.2vw,52px)", lineHeight: 1, letterSpacing: "0.05em", color: "var(--accent2)" }}>
+              <h2 style={{ margin: 0, fontWeight: 700, fontSize: "clamp(26px,3.2vw,52px)", lineHeight: 1.15, letterSpacing: "0.05em", color: "var(--accent2)" }}>
                 <Typewriter strings={["ENGINEER", "AI BUILDER", "ARCHITECT", "PROBLEM SOLVER"]} />
               </h2>
-              <h2 style={{ margin: 0, marginTop: -12, fontWeight: 400, fontSize: "clamp(20px,2.4vw,38px)", lineHeight: 1.1, letterSpacing: "0.05em" }}>Developer</h2>
+              <h2 style={{ margin: 0, marginTop: 6, fontWeight: 400, fontSize: "clamp(20px,2.4vw,38px)", lineHeight: 1.1, letterSpacing: "0.05em" }}>Developer</h2>
               <div style={{ marginTop: 20, display: "flex", gap: 10, flexWrap: "wrap" }}>
                 {["Django", "React", "AI", "SaaS"].map(tag => (
                   <span key={tag} style={{ fontSize: 11, letterSpacing: "0.18em", padding: "4px 12px", border: "1px solid rgba(194,164,255,0.25)", borderRadius: 3, color: "rgba(194,164,255,0.7)" }}>{tag}</span>
